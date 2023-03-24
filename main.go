@@ -1,7 +1,11 @@
 package main
 
-import "github.com/woohaen88/rest"
+import (
+	"github.com/woohaen88/blockchain"
+)
 
 func main() {
-	rest.Start(3000)
+	blockchain.Blockchain().AddBlock("First")
+	blockchain.Blockchain().AddBlock("Second")
+	blockchain.Blockchain().AddBlock("Third")
 }

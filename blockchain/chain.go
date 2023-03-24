@@ -1,7 +1,6 @@
 package blockchain
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/woohaen88/db"
@@ -42,12 +41,26 @@ func Blockchain() *blockchain {
 			}
 			
 		})
-	}
-	
-	fmt.Println(b.Newesthash)
+	}	
 	return b
 }
 
 func (b *blockchain) restore(data []byte){
 	utils.FromBytes(b, data)
+}
+
+func (b *blockchain) Blocks() []*Block{
+	blocks := []*Block{}
+	hashCursor := b.Newesthash
+	for {
+		block, _ := FindBlock(hashCursor)
+		blocks = append(blocks, block)
+		if block.PrevHash != "" {
+			hashCursor = block.PrevHash
+		}else{
+			break
+		}
+	}
+
+	return blocks
 }

@@ -16,14 +16,13 @@ type AddBlockBody struct {
 func Block(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		//json.NewEncoder(w).Encode(blockchain.GetBlockchain().AllBlocks())
-		return
-	case "POST":
-		return 
-		// var addBlockBody AddBlockBody
-		// json.NewDecoder(r.Body).Decode(&addBlockBody)
-		// blockchain.GetBlockchain().AddBlock(addBlockBody.Data)
-		// w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(blockchain.Blockchain().Blocks())
+		
+	case "POST":	 
+		var addBlockBody AddBlockBody
+		json.NewDecoder(r.Body).Decode(&addBlockBody)
+		blockchain.Blockchain().AddBlock(addBlockBody.Data)
+		w.WriteHeader(http.StatusCreated)
 	}
 }
 

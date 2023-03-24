@@ -59,8 +59,16 @@ func (b *blockchain) AllBlocks() []*Block {
 	return GetBlockchain().Blocks
 }
 
-var NotFoundError error = errors.New("Content not found")
+var NotFoundError = errors.New("Not Found Error")
 
 func (b *blockchain) Height(height string) (*Block, error) {
+	heightInt, _ := strconv.Atoi(height)	
 
+	for _, block := range b.Blocks {
+		if heightInt == block.Height{
+			return block, nil
+		}
+	}
+	
+	return nil, NotFoundError
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -24,11 +25,21 @@ func Block(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type Error struct {
+	Message string `json:"message"`
+}
+
 func GetBlockHeight(w http.ResponseWriter, r *http.Request) {
 	// block 데이터 한개 가져오기
 	vars := mux.Vars(r)
 	w.WriteHeader(http.StatusOK)
-	block, _ := blockchain.GetBlockchain().Height(vars["height"])
+	block, err := blockchain.GetBlockchain().Height(vars["height"])
+	encode := json.NewEncoder(w)
+	if err == blockchain.NotFoundError {
+		encode.Encode(Error{Message: fmt.Sprint(err)})
+	}else{
+		encode.Encode(block)
+	}
 
-	json.NewEncoder(w).Encode(block)
+	
 }

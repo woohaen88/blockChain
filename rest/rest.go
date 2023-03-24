@@ -16,7 +16,7 @@ func Start(aPort int) {
 	route.Use(ApplicationJsonMiddleWare)
 	route.HandleFunc("/", handler.Home)
 	route.HandleFunc("/block", handler.Block)
-	route.HandleFunc("/block/{height:[0-9]+}", handler.GetBlockHeight)
+	route.HandleFunc("/block/{hash:[a-f0-9]+}", handler.GetBlockHeight)
 	fmt.Printf("Listen Server http://localhost%s\n", Port)
 	http.ListenAndServe(":3000", route)
 

@@ -61,3 +61,4 @@ go.work
 # End of https://www.toptal.com/developers/gitignore/api/linux,visualstudiocode,go
 
 app.http
+blockchain.db

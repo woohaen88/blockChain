@@ -16,12 +16,14 @@ type AddBlockBody struct {
 func Block(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		json.NewEncoder(w).Encode(blockchain.GetBlockchain().AllBlocks())
+		//json.NewEncoder(w).Encode(blockchain.GetBlockchain().AllBlocks())
+		return
 	case "POST":
-		var addBlockBody AddBlockBody
-		json.NewDecoder(r.Body).Decode(&addBlockBody)
-		blockchain.GetBlockchain().AddBlock(addBlockBody.Data)
-		w.WriteHeader(http.StatusCreated)
+		return 
+		// var addBlockBody AddBlockBody
+		// json.NewDecoder(r.Body).Decode(&addBlockBody)
+		// blockchain.GetBlockchain().AddBlock(addBlockBody.Data)
+		// w.WriteHeader(http.StatusCreated)
 	}
 }
 
@@ -32,10 +34,11 @@ type Error struct {
 func GetBlockHeight(w http.ResponseWriter, r *http.Request) {
 	// block 데이터 한개 가져오기
 	vars := mux.Vars(r)
+	hash := vars["hash"]
 	w.WriteHeader(http.StatusOK)
-	block, err := blockchain.GetBlockchain().Height(vars["height"])
+	block, err := blockchain.FindBlock(hash)
 	encode := json.NewEncoder(w)
-	if err == blockchain.NotFoundError {
+	if err == blockchain.ErrNotFound {
 		encode.Encode(Error{Message: fmt.Sprint(err)})
 	}else{
 		encode.Encode(block)

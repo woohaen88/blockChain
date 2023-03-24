@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"strconv"
 	"sync"
@@ -56,4 +57,10 @@ func GetBlockchain() *blockchain {
 
 func (b *blockchain) AllBlocks() []*Block {
 	return GetBlockchain().Blocks
+}
+
+var NotFoundError error = errors.New("Content not found")
+
+func (b *blockchain) Height(height string) (*Block, error) {
+
 }

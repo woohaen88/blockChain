@@ -9,19 +9,13 @@ import (
 	"github.com/woohaen88/blockchain"
 )
 
-type AddBlockBody struct {
-	Data string `json:"data"`
-}
-
 func Block(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		json.NewEncoder(w).Encode(blockchain.Blockchain().Blocks())
-		
-	case "POST":	 
-		var addBlockBody AddBlockBody
-		json.NewDecoder(r.Body).Decode(&addBlockBody)
-		blockchain.Blockchain().AddBlock(addBlockBody.Data)
+
+	case "POST":
+		blockchain.Blockchain().AddBlock()
 		w.WriteHeader(http.StatusCreated)
 	}
 }
@@ -39,9 +33,8 @@ func GetBlockHeight(w http.ResponseWriter, r *http.Request) {
 	encode := json.NewEncoder(w)
 	if err == blockchain.ErrNotFound {
 		encode.Encode(Error{Message: fmt.Sprint(err)})
-	}else{
+	} else {
 		encode.Encode(block)
 	}
 
-	
 }
